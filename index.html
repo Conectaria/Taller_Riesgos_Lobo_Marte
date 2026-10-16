@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Evaluación grupal de tres riesgos principales de la ingeniería de consulta en Chile: votación Bajo, Medio o Alto con justificación.">
+<title>Riesgos de la ingeniería de consulta · Taller Conectaria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    /* Paleta Conectaria (Manual de Uso, pág. 6) */
+    --brand-navy:      #001B66;
+    --brand-blue:      #5271FF;
+    --brand-blue-strong:#0037FF;
+    --brand-orange:    #ED6B0A;
+    --brand-red:       #AF1414;
+
+    --surface-page:  #eef1f9;
+    --surface-card:  #ffffff;
+    --surface-sunken:#f6f7fc;
+
+    --text-primary:   #001B66;
+    --text-secondary: #3d4873;
+    --text-muted:     #7a84a8;
+
+    --border:        rgba(0,27,102,0.10);
+    --border-strong: rgba(0,27,102,0.18);
+    --shadow:        0 1px 2px rgba(0,27,102,.05), 0 8px 24px rgba(0,27,102,.07);
+
+    /* Semáforo: naranjo y rojo de marca; verde funcional (el manual no define colores de estado) */
+    --status-good:     #13924f;
+    --status-warning:  #ED6B0A;
+    --status-critical: #AF1414;
+    --status-pending:  #8f98bd;
+    --status-good-bg:     rgba(19,146,79,.12);
+    --status-warning-bg:  rgba(237,107,10,.13);
+    --status-critical-bg: rgba(175,20,20,.10);
+    --status-pending-bg:  rgba(143,152,189,.16);
+
+    --status-good-top:      #4fc185; --status-good-side:      #0b6435;
+    --status-warning-top:   #f7954b; --status-warning-side:   #a94b04;
+    --status-critical-top:  #d64848; --status-critical-side:  #780b0b;
+    --brand-blue-top:       #8ea2ff; --brand-blue-side:       #0037FF;
+
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --surface-page:  #000a26;
+      --surface-card:  #00123f;
+      --surface-sunken:#000d31;
+      --text-primary:   #f2f4ff;
+      --text-secondary: #b9c2e6;
+      --text-muted:     #7f8ab3;
+      --border:        rgba(255,255,255,0.10);
+      --border-strong: rgba(255,255,255,0.18);
+      --shadow:        0 1px 2px rgba(0,0,0,.3), 0 12px 32px rgba(0,0,0,.35);
+      --brand-blue:   #7c93ff;
+      --brand-orange: #ED6B0A;
+      --status-good:     #3ccb80;
+      --status-warning:  #ff8a33;
+      --status-critical: #e25858;
+      --status-pending:  #7f8ab3;
+      --status-good-bg:     rgba(60,203,128,.16);
+      --status-warning-bg:  rgba(255,138,51,.16);
+      --status-critical-bg: rgba(226,88,88,.16);
+      --status-pending-bg:  rgba(127,138,179,.18);
+
+      --status-good-top:      #74dca4; --status-good-side:      #1c8a50;
+      --status-warning-top:   #ffae70; --status-warning-side:   #c25806;
+      --status-critical-top:  #ef8a8a; --status-critical-side:  #a51c1c;
+      --brand-blue-top:       #aebbff; --brand-blue-side:       #3f5cf0;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+      --surface-page:  #000a26;
+      --surface-card:  #00123f;
+      --surface-sunken:#000d31;
+      --text-primary:   #f2f4ff;
+      --text-secondary: #b9c2e6;
+      --text-muted:     #7f8ab3;
+      --border:        rgba(255,255,255,0.10);
+      --border-strong: rgba(255,255,255,0.18);
+      --shadow:        0 1px 2px rgba(0,0,0,.3), 0 12px 32px rgba(0,0,0,.35);
+      --brand-blue:   #7c93ff;
+      --brand-orange: #ED6B0A;
+      --status-good:     #3ccb80;
+      --status-warning:  #ff8a33;
+      --status-critical: #e25858;
+      --status-pending:  #7f8ab3;
+      --status-good-bg:     rgba(60,203,128,.16);
+      --status-warning-bg:  rgba(255,138,51,.16);
+      --status-critical-bg: rgba(226,88,88,.16);
+      --status-pending-bg:  rgba(127,138,179,.18);
+
+      --status-good-top:      #74dca4; --status-good-side:      #1c8a50;
+      --status-warning-top:   #ffae70; --status-warning-side:   #c25806;
+      --status-critical-top:  #ef8a8a; --status-critical-side:  #a51c1c;
+      --brand-blue-top:       #aebbff; --brand-blue-side:       #3f5cf0;
+  }
+
+
+  :root{
+    --lv-b: var(--status-good);     --lv-b-top: var(--status-good-top);     --lv-b-side: var(--status-good-side);     --lv-b-bg: var(--status-good-bg);
+    --lv-m: var(--status-warning);  --lv-m-top: var(--status-warning-top);  --lv-m-side: var(--status-warning-side);  --lv-m-bg: var(--status-warning-bg);
+    --lv-a: var(--status-critical); --lv-a-top: var(--status-critical-top); --lv-a-side: var(--status-critical-side); --lv-a-bg: var(--status-critical-bg);
+  }
+  html{ scroll-padding-top: env(safe-area-inset-top, 0px); }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--surface-page); color:var(--text-primary); font-family:'Work Sans', system-ui, -apple-system, "Segoe UI", sans-serif; padding-inline:16px; }
+  h1,h2,h3,h4,.display{ font-family:'Poppins', system-ui, sans-serif; text-wrap:balance; }
+  button{ font:inherit; }
+  [hidden]{ display:none !important; }
+  .wrap{ max-width:1180px; margin:0 auto; padding-block:20px 64px; }
+
+  /* ---------- encabezado de marca ---------- */
+  .topbar{ background:#001B66; color:#eef1fb; border-radius:18px; padding:22px 26px; position:relative; overflow:hidden;
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:20px; box-shadow:var(--shadow); }
+  .topbar .text-left{ flex:1 1 320px; min-width:0; position:relative; z-index:1; }
+  .topbar .eyebrow{ font-size:12px; letter-spacing:.4px; opacity:.75; margin-bottom:6px; font-weight:500; }
+  .topbar h1{ font-size:23px; font-weight:600; margin:0 0 4px; color:#fff; }
+  .topbar .sub{ font-size:14px; opacity:.85; max-width:62ch; line-height:1.5; }
+  .logo-stack{ flex:none; position:relative; z-index:1; display:flex; align-items:center; gap:30px; }
+  .logo-stack .aic{ height:40px; width:auto; display:block; }
+  .cx-logo{ display:flex; align-items:center; gap:7px; color:#fff; }
+  .cx-logo img{ height:34px; width:auto; display:block; }
+  .cx-logo span{ font-family:'Poppins', system-ui, sans-serif; font-weight:500; font-size:27px; letter-spacing:-.2px; line-height:1; }
+  @media(max-width:640px){ .topbar{ text-align:center; justify-content:center; } .logo-stack{ order:-1; } }
+
+  .card{ background:var(--surface-card); border:1px solid var(--border); border-radius:16px; padding:20px 22px; box-shadow:var(--shadow); }
+
+  /* ---------- estado del participante ---------- */
+  .statuscard{ margin-top:16px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:14px 18px; }
+  .pulse{ width:12px; height:12px; border-radius:50%; background:var(--brand-blue); flex:none; animation:pulse 1.6s ease-in-out infinite; }
+  .pulse.live{ background:var(--status-good); }
+  .pulse.done{ background:var(--brand-navy); animation:none; }
+  @keyframes pulse{ 0%,100%{ transform:scale(1); opacity:1; } 50%{ transform:scale(1.5); opacity:.45; } }
+  .stxt{ flex:1 1 260px; min-width:0; }
+  .st{ font-family:'Poppins',sans-serif; font-weight:600; font-size:15px; }
+  .sp{ font-size:13px; color:var(--text-secondary); margin-top:2px; line-height:1.5; }
+  .ssm{ font-size:12.5px; color:var(--text-muted); display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .conn{ font-weight:600; font-size:11.5px; padding:4px 11px; border-radius:999px; }
+  .conn.on{ background:var(--status-good-bg); color:var(--status-good); }
+  .conn.off{ background:var(--status-critical-bg); color:var(--status-critical); }
+  .conn.demo{ background:var(--status-pending-bg); color:var(--text-secondary); }
+  .linkbtn{ background:none; border:none; color:var(--brand-blue); cursor:pointer; text-decoration:underline; padding:0; font-size:12.5px; }
+
+  /* ---------- barra del facilitador ---------- */
+  .factoolbar{ position:sticky; top:calc(8px + env(safe-area-inset-top, 0px)); z-index:30; margin-top:16px; padding:14px 18px; display:flex; flex-wrap:wrap; gap:12px 20px; align-items:center; justify-content:space-between; border:1px solid var(--brand-blue); }
+  .fb-left{ flex:1 1 300px; min-width:0; }
+  .fb-title{ font-family:'Poppins',sans-serif; font-weight:600; font-size:16px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .fb-meta{ font-size:12.5px; color:var(--text-secondary); margin-top:4px; }
+  .pill{ font-size:11px; font-weight:600; padding:4px 11px; border-radius:999px; font-family:'Poppins',sans-serif; }
+  .pill.idle, .pill.shown{ background:var(--status-pending-bg); color:var(--text-secondary); }
+  .pill.voting{ background:var(--status-good-bg); color:var(--status-good); }
+  .pill.result{ background:rgba(82,113,255,.16); color:var(--brand-blue); }
+  .pill.final{ background:var(--brand-navy); color:#fff; }
+  .fb-actions{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .fbtn{ font-family:'Work Sans',sans-serif; font-size:12.5px; font-weight:600; cursor:pointer; padding:9px 13px; border-radius:9px; border:1px solid var(--border-strong); background:var(--surface-card); color:var(--text-secondary); }
+  .fbtn:hover{ color:var(--brand-blue); border-color:var(--brand-blue); }
+  .fbtn[disabled]{ opacity:.4; cursor:default; }
+  .fbtn.primary{ font-family:'Poppins',sans-serif; font-weight:600; font-size:14px; padding:11px 18px; border:none; color:#fff; background:linear-gradient(180deg, var(--brand-blue-top), var(--brand-blue) 55%, var(--brand-blue-side)); box-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 2px 6px rgba(0,27,102,.2); }
+  .fbtn.primary:hover{ color:#fff; filter:brightness(1.06); }
+  .fbtn.danger:hover{ color:var(--status-critical); border-color:var(--status-critical); }
+
+  /* ---------- leyenda ---------- */
+  .legend{ display:flex; flex-wrap:wrap; align-items:center; gap:14px 26px; margin-top:16px; padding:14px 18px; }
+  .legend .ltitle{ font-family:'Poppins',sans-serif; font-size:12px; font-weight:600; color:var(--text-primary); }
+  .legend .item{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-secondary); }
+  .legend .hint{ margin-left:auto; font-size:12px; color:var(--text-muted); }
+  .sw{ width:18px; height:18px; border-radius:5px; flex:none; }
+  .sw.b, .seg.b, .lvbtn.b.on, .bigtag.b{ background:linear-gradient(180deg, var(--lv-b-top), var(--lv-b) 55%, var(--lv-b-side)); }
+  .sw.m, .seg.m, .lvbtn.m.on, .bigtag.m{ background:linear-gradient(180deg, var(--lv-m-top), var(--lv-m) 55%, var(--lv-m-side)); }
+  .sw.a, .seg.a, .lvbtn.a.on, .bigtag.a{ background:linear-gradient(180deg, var(--lv-a-top), var(--lv-a) 55%, var(--lv-a-side)); }
+
+  /* ---------- tablero de riesgos ---------- */
+  .board{ margin-top:18px; }
+  .gridhead, .rrow{ display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) 128px 14px; align-items:center; column-gap:16px; }
+  .gridhead{ padding:0 14px 10px; }
+  .hcell{ font-size:12px; font-weight:600; color:var(--text-secondary); font-family:'Poppins',sans-serif; }
+  .hcell.c{ text-align:center; }
+  .rows{ display:flex; flex-direction:column; gap:8px; }
+  .rrow{ cursor:pointer; background:var(--surface-sunken); border:1px solid var(--border); border-radius:12px; padding:12px 14px; transition:border-color .15s, box-shadow .15s; }
+  .rrow:hover{ border-color:var(--brand-blue); }
+  .rrow:focus-visible{ outline:2px solid var(--brand-blue); outline-offset:2px; }
+  .rrow.current{ border-color:var(--brand-blue); box-shadow:0 0 0 2px rgba(82,113,255,.35); }
+  .rlabel{ min-width:0; }
+  .idline{ display:flex; align-items:center; gap:8px; margin-bottom:3px; flex-wrap:wrap; }
+  .idbadge{ font-family:'Poppins',sans-serif; font-weight:600; font-size:12.5px; background:var(--brand-navy); color:#fff; border-radius:6px; padding:2px 8px; flex:none; }
+  :root[data-theme="dark"] .idbadge{ background:#0d2a8c; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .idbadge{ background:#0d2a8c; } }
+  .cat{ font-size:11.5px; color:var(--brand-blue); font-weight:600; }
+  .rtitle{ font-size:13.5px; color:var(--text-primary); line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .dist{ min-width:0; }
+  .stack{ display:flex; height:30px; border-radius:8px; overflow:hidden; background:var(--surface-card); border:1px solid var(--border); }
+  .seg{ display:flex; align-items:center; justify-content:center; color:#fff; font-family:'Poppins',sans-serif; font-weight:600; font-size:12px; min-width:0; transition:width .35s; text-shadow:0 1px 1px rgba(0,0,0,.2); white-space:nowrap; overflow:hidden; }
+  .stack.pending{ border:none; background:repeating-linear-gradient(135deg, rgba(255,255,255,.22) 0 8px, transparent 8px 16px), linear-gradient(180deg, var(--brand-blue-top), var(--brand-blue)); color:#fff; align-items:center; justify-content:center; font-size:12px; font-weight:600; font-family:'Poppins',sans-serif; }
+  .stack.idle{ align-items:center; justify-content:center; font-size:12px; color:var(--text-muted); border-style:dashed; }
+  .dmeta{ font-size:11.5px; color:var(--text-muted); margin-top:4px; display:flex; justify-content:space-between; gap:8px; }
+  .rescell{ display:flex; flex-direction:column; align-items:center; gap:3px; }
+  .restag{ display:inline-block; min-width:104px; text-align:center; font-family:'Poppins',sans-serif; font-weight:600; font-size:12px; padding:6px 10px; border-radius:999px; white-space:nowrap; }
+  .restag.b{ background:var(--lv-b-bg); color:var(--lv-b); }
+  .restag.m{ background:var(--lv-m-bg); color:var(--lv-m); }
+  .restag.a{ background:var(--lv-a-bg); color:var(--lv-a); }
+  .restag.none{ background:var(--status-pending-bg); color:var(--text-muted); }
+  .restag.cur{ background:var(--brand-blue); color:#fff; }
+  .rcount{ font-size:11px; color:var(--text-muted); }
+  .chev{ color:var(--text-muted); font-size:15px; }
+  @media (max-width:760px){
+    .gridhead{ display:none; }
+    .rrow{ grid-template-columns:minmax(0,1fr) 108px; row-gap:10px; }
+    .rrow .dist{ grid-column:1 / -1; grid-row:2; }
+    .rrow .chev{ display:none; }
+    .restag{ min-width:92px; }
+  }
+
+  /* ---------- gráfico de resultados ---------- */
+  .chartcard{ margin-top:18px; }
+  .chartcard h2{ font-size:19px; font-weight:600; margin:0 0 4px; }
+  .chartcard .ssub{ font-size:13.5px; color:var(--text-secondary); margin-bottom:10px; line-height:1.5; }
+  .chartwrap{ overflow-x:auto; }
+  .chartwrap svg{ display:block; width:100%; min-width:560px; height:auto; font-family:'Poppins', system-ui, sans-serif; }
+  .chartlegend{ display:flex; gap:18px; flex-wrap:wrap; font-size:12.5px; color:var(--text-secondary); margin-top:6px; }
+  .chartlegend span{ display:flex; align-items:center; gap:7px; }
+
+  /* ---------- resultado final ---------- */
+  .summary{ margin-top:18px; }
+  .summary h2{ font-size:19px; font-weight:600; margin:0 0 4px; }
+  .summary .ssub{ font-size:13.5px; color:var(--text-secondary); margin-bottom:16px; line-height:1.5; }
+  .rank{ display:grid; grid-template-columns:34px minmax(0,1.2fr) minmax(0,1fr) 88px 112px; gap:14px; align-items:center; padding:12px 4px; border-top:1px solid var(--border); }
+  .rank:first-of-type{ border-top:none; }
+  .rank .pos{ font-family:'Poppins',sans-serif; font-weight:600; font-size:20px; color:var(--text-muted); text-align:center; }
+  .rank .score{ text-align:center; }
+  .rank .score b{ display:block; font-family:'Poppins',sans-serif; font-weight:600; font-size:18px; }
+  .rank .score span{ font-size:11px; color:var(--text-muted); }
+  @media (max-width:760px){ .rank{ grid-template-columns:28px minmax(0,1fr) 96px; } .rank .dist{ grid-column:2 / -1; } .rank .score{ display:none; } }
+  .smeth{ margin-top:14px; font-size:12px; color:var(--text-muted); line-height:1.6; }
+
+  /* ---------- ventana del riesgo ---------- */
+  .overlay{ position:fixed; inset:0; background:rgba(0,10,38,.55); backdrop-filter:blur(2px); display:flex; align-items:flex-start; justify-content:center; padding:5vh 16px; z-index:50; overflow-y:auto; }
+  .modal{ background:var(--surface-card); border-radius:18px; max-width:780px; width:100%; box-shadow:0 24px 64px rgba(0,0,0,.35); padding:26px 28px 24px; position:relative; }
+  .closebtn{ position:absolute; top:16px; right:16px; width:34px; height:34px; border-radius:50%; border:1px solid var(--border-strong); background:var(--surface-sunken); color:var(--text-secondary); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .closebtn:hover{ color:var(--brand-blue); border-color:var(--brand-blue); }
+  .id-row{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px; padding-right:44px; }
+  .badge{ display:inline-flex; align-items:center; font-size:12px; font-weight:600; padding:5px 12px; border-radius:999px; font-family:'Poppins',sans-serif; }
+  .badge.id{ background:var(--brand-navy); color:#fff; }
+  .badge.scope{ background:rgba(82,113,255,.12); color:var(--brand-blue); border:1px solid rgba(82,113,255,.35); }
+  .mod-title{ font-family:'Poppins',sans-serif; font-size:19px; font-weight:600; color:var(--text-primary); line-height:1.4; margin-bottom:16px; }
+  .section-label{ font-family:'Poppins',sans-serif; font-size:12px; color:var(--text-muted); font-weight:600; margin:16px 0 6px; }
+  .section-body{ font-size:14px; line-height:1.65; color:var(--text-secondary); background:var(--surface-sunken); border-left:3px solid var(--brand-blue); padding:13px 16px; border-radius:6px; }
+  .refchip{ margin-top:12px; display:flex; gap:8px; align-items:baseline; font-size:13px; color:var(--text-secondary); background:rgba(237,107,10,.08); border:1px solid rgba(237,107,10,.3); border-radius:10px; padding:10px 14px; line-height:1.5; }
+  .refchip b{ color:var(--brand-orange); font-family:'Poppins',sans-serif; font-weight:600; font-size:12px; flex:none; }
+  .cc{ margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:560px){ .cc{ grid-template-columns:1fr; } }
+  .cc h4{ font-size:13px; font-weight:600; margin:0 0 9px; color:var(--text-primary); }
+  .cc ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+  .cc li{ font-size:13px; line-height:1.55; color:var(--text-secondary); padding-left:14px; position:relative; }
+  .cc li::before{ content:""; position:absolute; left:0; top:.6em; width:6px; height:6px; border-radius:50%; background:var(--brand-blue); }
+  .cc .con li::before{ background:var(--brand-orange); }
+  .cc li strong{ color:var(--text-primary); font-weight:700; }
+
+  .votebox{ margin-top:20px; padding:16px 18px; border-radius:12px; background:var(--surface-sunken); border:1px solid var(--border-strong); }
+  .phasebanner{ font-size:13px; font-weight:600; padding:10px 14px; border-radius:10px; margin-bottom:14px; }
+  .phasebanner.wait{ background:var(--status-pending-bg); color:var(--text-secondary); }
+  .phasebanner.open{ background:var(--status-good-bg); color:var(--status-good); }
+  .phasebanner.closed{ background:rgba(82,113,255,.14); color:var(--brand-blue); }
+  .vlabel{ font-family:'Poppins',sans-serif; font-size:13px; color:var(--text-primary); font-weight:600; margin-bottom:10px; }
+  .lvbtns{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .lvbtn{ font-family:'Poppins',sans-serif; font-weight:600; font-size:16px; cursor:pointer; padding:16px 10px; border-radius:12px; border:2px solid var(--border-strong); background:var(--surface-card); color:var(--text-secondary); display:flex; flex-direction:column; align-items:center; gap:4px; transition:border-color .15s, color .15s, transform .15s; }
+  .lvbtn small{ font-family:'Work Sans',sans-serif; font-weight:500; font-size:11.5px; color:var(--text-muted); text-align:center; line-height:1.3; }
+  .lvbtn:hover:not([disabled]){ transform:translateY(-1px); }
+  .lvbtn.b:hover:not([disabled]){ border-color:var(--lv-b); color:var(--lv-b); }
+  .lvbtn.m:hover:not([disabled]){ border-color:var(--lv-m); color:var(--lv-m); }
+  .lvbtn.a:hover:not([disabled]){ border-color:var(--lv-a); color:var(--lv-a); }
+  .lvbtn.on{ color:#fff; border-color:transparent; box-shadow:inset 0 1px 0 rgba(255,255,255,.3); }
+  .lvbtn.on small{ color:rgba(255,255,255,.85); }
+  .lvbtn[disabled]{ opacity:.42; cursor:not-allowed; }
+  .lvbtn.on[disabled]{ opacity:1; }
+  .myvote{ margin-top:12px; font-size:13px; color:var(--text-secondary); line-height:1.5; }
+  .myvote b{ color:var(--text-primary); }
+
+  .tally{ margin-top:16px; padding-top:14px; border-top:1px dashed var(--border-strong); }
+  .tallyhead{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px; font-size:13.5px; color:var(--text-secondary); }
+  .bigtag{ color:#fff; font-family:'Poppins',sans-serif; font-weight:600; font-size:14px; padding:7px 16px; border-radius:999px; }
+  .bigtag.none{ background:var(--status-pending); }
+  .tcols{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:12px; }
+  @media (max-width:560px){ .tcols{ grid-template-columns:1fr; } }
+  .tcol{ background:var(--surface-card); border-radius:10px; padding:10px 12px; border-top:3px solid transparent; }
+  .tcol.b{ border-top-color:var(--lv-b); } .tcol.m{ border-top-color:var(--lv-m); } .tcol.a{ border-top-color:var(--lv-a); }
+  .tcol .th{ display:flex; justify-content:space-between; font-family:'Poppins',sans-serif; font-weight:600; font-size:13px; }
+  .tcol.b .th{ color:var(--lv-b); } .tcol.m .th{ color:var(--lv-m); } .tcol.a .th{ color:var(--lv-a); }
+  .tcol .names{ margin-top:6px; font-size:12px; color:var(--text-secondary); line-height:1.6; }
+  .tcol .names i{ color:var(--text-muted); }
+  .modalfoot{ margin-top:18px; display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+  .facaccess{ margin-top:12px; text-align:right; }
+  .jlabel{ display:block; margin-top:16px; margin-bottom:6px; font-family:'Poppins',sans-serif; font-size:13px; font-weight:600; color:var(--text-primary); }
+  .jlabel span{ font-family:'Work Sans',sans-serif; font-weight:500; color:var(--text-muted); font-size:12px; }
+  .justin{ width:100%; resize:vertical; min-height:76px; padding:11px 13px; font:inherit; font-size:14px; line-height:1.5; border-radius:10px; border:2px solid var(--border-strong); background:var(--surface-card); color:var(--text-primary); }
+  .justin:focus{ outline:none; border-color:var(--brand-blue); }
+  .justin[disabled]{ opacity:.75; }
+  .sendrow{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:10px; }
+  .jcount{ font-size:11.5px; color:var(--text-muted); }
+  .warn{ color:var(--status-warning); font-weight:600; }
+  .justs{ margin-top:18px; padding-top:14px; border-top:1px dashed var(--border-strong); }
+  .jitem{ background:var(--surface-card); border-radius:10px; padding:10px 13px; margin-bottom:8px; border-left:3px solid transparent; }
+  .jitem.b{ border-left-color:var(--lv-b); } .jitem.m{ border-left-color:var(--lv-m); } .jitem.a{ border-left-color:var(--lv-a); }
+  .jwho{ font-size:12.5px; color:var(--text-secondary); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .jwho b{ color:var(--text-primary); }
+  .jlv{ font-family:'Poppins',sans-serif; font-weight:600; font-size:10.5px; padding:2px 8px; border-radius:999px; }
+  .jlv.b{ background:var(--lv-b-bg); color:var(--lv-b); } .jlv.m{ background:var(--lv-m-bg); color:var(--lv-m); } .jlv.a{ background:var(--lv-a-bg); color:var(--lv-a); }
+  .jtxt{ margin-top:5px; font-size:13.5px; line-height:1.55; color:var(--text-primary); white-space:pre-wrap; }
+  .fbtn.dl{ border-color:var(--brand-blue); color:var(--brand-blue); }
+
+  /* ---------- ingreso ---------- */
+  #gate{ z-index:80; align-items:center; }
+  #gate .modal{ max-width:430px; }
+  #gate h2{ margin:0 0 6px; font-size:19px; font-weight:600; }
+  #gate p{ margin:0 0 14px; font-size:13.5px; color:var(--text-secondary); line-height:1.5; }
+  #gate input{ width:100%; padding:13px 14px; font:inherit; font-size:15px; border-radius:10px; border:2px solid var(--border-strong); background:var(--surface-sunken); color:var(--text-primary); margin-bottom:12px; }
+  #gate input:focus{ outline:none; border-color:var(--brand-blue); }
+  #gate label{ display:block; font-family:'Poppins',sans-serif; font-size:12.5px; font-weight:600; color:var(--text-primary); margin-bottom:5px; }
+  #gate input.bad{ border-color:var(--status-critical); }
+  .roletabs{ display:flex; gap:4px; padding:4px; border-radius:12px; background:var(--surface-sunken); margin-bottom:18px; }
+  .roletabs button{ flex:1; font-family:'Poppins',sans-serif; font-weight:600; font-size:13px; padding:10px 8px; border:none; border-radius:9px; background:transparent; color:var(--text-muted); cursor:pointer; }
+  .roletabs button.on{ background:var(--surface-card); color:var(--brand-blue); box-shadow:0 1px 3px rgba(0,27,102,.12); }
+  .err{ background:var(--status-critical-bg); color:var(--status-critical); font-size:12.5px; font-weight:600; padding:8px 12px; border-radius:8px; margin-bottom:12px; }
+  .gobtn{ width:100%; }
+
+  #toast{ position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom, 0px)); transform:translateX(-50%) translateY(20px); background:var(--brand-navy); color:#fff; padding:11px 18px; border-radius:10px; font-size:13.5px; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s; z-index:100; max-width:90vw; }
+  #toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+  .foot{ margin-top:22px; font-size:12px; color:var(--text-muted); text-align:center; line-height:1.6; }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+  :focus-visible{ outline:2px solid var(--brand-blue); outline-offset:2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="topbar">
+    <div class="text-left">
+      <h1>Riesgos de la ingeniería de consulta en Chile</h1>
+      <div class="sub" id="topSub">Evaluaremos en grupo los tres riesgos principales del sector. Cada participante califica cada riesgo como Bajo, Medio o Alto y puede justificar su voto.</div>
+    </div>
+    <div class="logo-stack">
+      <img class="aic" src="data:image/png;base64,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" alt="AIC, Asociación de Empresas Consultoras de Ingeniería de Chile">
+      <div class="cx-logo" role="img" aria-label="Conectaria"><img src="data:image/png;base64,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" alt=""><span>Conectaria</span></div>
+    </div>
+  </header>
+
+  <!-- Participante: estado -->
+  <div class="card statuscard" id="statusCard" hidden>
+    <div class="pulse" id="pulse"></div>
+    <div class="stxt"><div class="st" id="stTitle"></div><div class="sp" id="stText"></div></div>
+    <div class="ssm"><span class="conn" id="conn"></span><span id="whoami"></span><button class="linkbtn" id="changeName">cambiar mis datos</button><button class="linkbtn" id="goFac">acceso facilitador</button></div>
+  </div>
+
+  <!-- Facilitador -->
+  <div class="card factoolbar" id="facBar" hidden></div>
+
+  <div class="card legend">
+    <span class="ltitle">Nivel de riesgo</span>
+    <span class="item"><span class="sw b"></span>Bajo</span>
+    <span class="item"><span class="sw m"></span>Medio</span>
+    <span class="item"><span class="sw a"></span>Alto</span>
+    <span class="hint">Haz clic en un riesgo para ver su detalle</span>
+  </div>
+
+  <section class="card board" aria-label="Tablero de riesgos">
+    <div class="gridhead">
+      <div class="hcell">Riesgo</div>
+      <div class="hcell">Distribución de votos</div>
+      <div class="hcell c">Nivel del grupo</div>
+      <div></div>
+    </div>
+    <div class="rows" id="rows"></div>
+  </section>
+
+  <section class="card chartcard" id="chartCard" hidden>
+    <h2>Gráfico de resultados</h2>
+    <div class="ssub" id="chartSub"></div>
+    <div class="chartwrap" id="chartBox"></div>
+    <div class="chartlegend"><span><span class="sw b"></span>Bajo</span><span><span class="sw m"></span>Medio</span><span><span class="sw a"></span>Alto</span><span>Sobre cada columna: índice promedio (1 a 3) y nivel del grupo</span></div>
+  </section>
+
+  <section class="card summary" id="summary" hidden>
+    <h2>Resultado del taller</h2>
+    <div class="ssub" id="summarySub"></div>
+    <div id="rankList"></div>
+    <div class="smeth">El nivel del grupo es la opción con más votos; si hay empate se adopta el nivel más alto, por criterio conservador. El índice promedio asigna 1 a Bajo, 2 a Medio y 3 a Alto, y ordena el ranking.</div>
+  </section>
+
+  <div class="foot">Fuente de los riesgos: análisis de Conectaria sobre encuestas gremiales (AIC, ACEC), aseguradoras y prensa especializada, 2024–2026.</div>
+</div>
+
+<!-- Ingreso -->
+<div class="overlay" id="gate" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+    <div class="roletabs">
+      <button type="button" id="tabPart" class="on">Soy participante</button>
+      <button type="button" id="tabFac">Soy facilitador</button>
+    </div>
+    <div id="panePart">
+      <h2 id="gateTitle">¿Quién está votando?</h2>
+      <p>Completa tus datos para registrar tu asistencia y tus votos. El facilitador abrirá la votación de cada riesgo durante el taller.</p>
+      <div class="err" id="regErr" hidden></div>
+      <label for="nameInput">Nombre y apellido</label>
+      <input id="nameInput" maxlength="40" placeholder="Ej: María González" autocomplete="name">
+      <label for="empInput">Empresa</label>
+      <input id="empInput" maxlength="60" placeholder="Ej: Conectaria" autocomplete="organization">
+      <label for="mailInput">Email</label>
+      <input id="mailInput" type="email" maxlength="80" placeholder="nombre@empresa.cl" autocomplete="email" inputmode="email">
+      <button class="fbtn primary gobtn" id="nameOk">Entrar al taller</button>
+    </div>
+    <div id="paneFac" hidden>
+      <h2>Acceso de facilitador</h2>
+      <p>Escribe el PIN para dirigir el taller.</p>
+      <div class="err" id="pinErr" hidden></div>
+      <input id="pinInput" type="password" placeholder="PIN" autocomplete="off">
+      <button class="fbtn primary gobtn" id="pinOk">Entrar como facilitador</button>
+    </div>
+    <div style="text-align:center;margin-top:12px;"><button class="linkbtn" id="gateCancel" hidden>cancelar</button></div>
+  </div>
+</div>
+
+<!-- Detalle del riesgo -->
+<div class="overlay" id="overlay" hidden>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button class="closebtn" id="closeBtn" aria-label="Cerrar">✕</button>
+    <div class="id-row" id="mId"></div>
+    <div class="mod-title" id="mTitle"></div>
+    <div class="section-label">Descripción</div>
+    <div class="section-body" id="mDesc"></div>
+    <div class="refchip" id="mRef"></div>
+    <div class="cc">
+      <div class="cau"><h4>Causas</h4><ul id="mCau"></ul></div>
+      <div class="con"><h4>Consecuencias</h4><ul id="mCon"></ul></div>
+    </div>
+    <div class="votebox" id="voteBox"></div>
+    <div class="modalfoot" id="mFoot" hidden></div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =====================================================================
+   CONFIGURACIÓN
+   API_URL: URL del Apps Script publicado (termina en /exec).
+   Si queda vacío, la app funciona en MODO DEMO: guarda todo en este
+   navegador y sincroniza entre pestañas (sirve para ensayar el taller).
+   También acepta ?api=URL al final del enlace.
+   ===================================================================== */
+var API_URL = 'https://script.google.com/macros/s/AKfycbx0cCEtM2YaMZ-KrFUW7ttpDv6nIgFWB2Nx65yvDXT7eI7u6soJOXGvlCeMSM9oWt8N/exec';
+var DEMO_PIN = 'CONECTARIA';   // PIN solo para modo demo; en servidor manda Code.gs
+var POLL_MS = 1500;
+var JUST_MAX = 500;
+var XLSX_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+
+var RISKS = [
+  // Formato: "Debido a [causas], podría ocurrir [riesgo = un único evento], lo que provocaría [consecuencias]".
+  // **texto** se muestra en negrita.
+  { id:'R1', cat:'Mercado y clientes',
+    title:'Caída de la demanda de servicios de ingeniería de consulta de los principales mandantes mineros',
+    desc:'La ingeniería de consulta chilena depende de la minería, que concentra el 65% de las horas de ingeniería, y de pocos mandantes. La cartera de inversión es la más alta en una década, pero se convierte con lentitud en contratos de ingeniería pagada.',
+    ref:'Codelco y el MOP explican el 41% de la actividad del sector (ICON 2T 2026, AIC).',
+    causas:['**Postergación de decisiones de inversión** de los mandantes por precios, tasas de interés o permisos','**Concentración de la cartera** de la consultora en dos o tres clientes mineros','**Caída de 52,6% anual de la ingeniería pública**, que antes amortiguaba los ciclos'],
+    cons:['**Baja utilización** de los equipos de ingeniería','**Menores ingresos** por horas de ingeniería no contratadas','**Reducción de dotación** justo antes de un repunte de la demanda'] },
+  { id:'R2', cat:'Contratos y finanzas',
+    title:'Limitación de caja de la consultora para sostener la ejecución de sus contratos de ingeniería',
+    desc:'Las bases de licitación privilegian el menor precio y trasladan al consultor riesgos de alcance, mientras los mandantes pagan más tarde de lo que exige la Ley 21.131. Así, la consultora puede quedar financiando horas de ingeniería ya ejecutadas.',
+    ref:'El sector construcción e ingeniería paga en 48 días promedio, frente a los 30 días que fija la ley (Ranking de Pagadores, 2025–2026).',
+    causas:['**Licitaciones adjudicadas por menor precio**, con márgenes estrechos','**Cambios de alcance no reconocidos** por el mandante','**Pagos fuera del plazo legal** de 30 días'],
+    cons:['**Mayor costo financiero** por uso de crédito de corto plazo, que reduce el margen de los contratos','**Menor capacidad para financiar** nuevas licitaciones y proyectos','**Atrasos en pagos** a proveedores y subcontratistas'] },
+  { id:'R3', cat:'Cliente y contratación',
+    title:'Endurecimiento de las condiciones de contratación de servicios de ingeniería por parte del principal mandante minero estatal',
+    desc:'Los sobrecostos de los proyectos estructurales llevaron al principal mandante estatal a reforzar controles, auditar y revisar su organización de proyectos. Ese endurecimiento podría trasladarse a las condiciones con que contrata servicios de ingeniería.',
+    ref:'Rajo Inca pasó de US$1.383 a 2.740 millones (+98%) y Chuquicamata Subterránea creció 67%.',
+    causas:['**Sobrecostos de los megaproyectos** estructurales del mandante','**Ejecución en paralelo** de proyectos sin evaluar límites de capacidad','**Baja productividad de contratistas** principales','**Reorganización de la gestión de proyectos** del mandante'],
+    cons:['**Mayores costos de cumplimiento** por auditorías y controles adicionales','**Mayor exposición contractual** de la consultora ante condiciones más exigentes','**Menor volumen de contratos** de ingeniería con el principal mandante'] }
+];
+var N = RISKS.length;
+var LV = {
+  B:{ name:'Bajo',  cls:'b', score:1, help:'Poco probable o de impacto acotado' },
+  M:{ name:'Medio', cls:'m', score:2, help:'Requiere seguimiento y controles' },
+  A:{ name:'Alto',  cls:'a', score:3, help:'Requiere acción prioritaria' }
+};
+var ORDER = ['B','M','A'];
+
+/* ------------------------- utilidades ------------------------- */
+function $(id){ return document.getElementById(id); }
+function rich(t){ return esc(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>'); }
+function esc(t){ return String(t == null ? '' : t).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function validEmail(m){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(m || '').trim()); }
+function key(n){ return String(n || '').trim().toLowerCase().replace(/\s+/g,' '); }
+function cleanName(n){ return String(n || '').trim().replace(/\s+/g,' ').slice(0,40); }
+function lvOf(v){ return v ? (typeof v === 'string' ? v : v.l) : null; }
+function justOf(v){ return (v && typeof v === 'object' && v.j) ? v.j : ''; }
+function attObj(k){ var a = S.attendees[k]; if(!a) return { name:k }; return typeof a === 'string' ? { name:a } : a; }
+function attName(k){ return attObj(k).name || k; }
+function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+function ssGet(k){ try{ return sessionStorage.getItem(k); }catch(e){ return null; } }
+function ssSet(k,v){ try{ sessionStorage.setItem(k,v); }catch(e){} }
+function ssDel(k){ try{ sessionStorage.removeItem(k); }catch(e){} }
+function plural(n, s, p){ return n + ' ' + (n === 1 ? s : p); }
+var toastT;
+function toast(msg){ var t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(function(){ t.classList.remove('show'); }, 2800); }
+
+(function(){ try{ var q = new URLSearchParams(location.search).get('api'); if(q) API_URL = q; }catch(e){} })();
+var DEMO = !API_URL;
+
+/* ------------------------- modelo ------------------------- */
+function blankVotes(){ var v = []; for(var i=0;i<N;i++) v.push({}); return v; }
+function blankState(){ return { phase:'idle', current:0, revealed:[], votes:blankVotes(), attendees:{}, rev:0 }; }
+function normalize(s){
+  var b = blankState(); s = s || {};
+  b.phase = s.phase || 'idle'; b.current = Math.min(N - 1, +s.current || 0); b.rev = +s.rev || 0;
+  b.revealed = Array.isArray(s.revealed) ? s.revealed.map(Number).filter(function(x){ return x < N; }) : [];
+  b.attendees = s.attendees || {};
+  for(var i=0;i<N;i++) b.votes[i] = (s.votes && s.votes[i]) || {};
+  return b;
+}
+// Misma lógica que Code.gs (se usa tal cual en modo demo)
+function applyAction(s, body){
+  var a = body.action;
+  if(a === 'join'){
+    var n = cleanName(body.name); if(!n) return { ok:false, error:'Falta el nombre.' };
+    var emp = String(body.empresa || '').trim().slice(0,60), mail = String(body.email || '').trim().toLowerCase().slice(0,80);
+    if(!emp) return { ok:false, error:'Falta la empresa.' };
+    if(!validEmail(mail)) return { ok:false, error:'El email no es válido.' };
+    s.attendees[key(n)] = { name:n, empresa:emp, email:mail }; return { ok:true };
+  }
+  if(a === 'vote'){
+    var nm = cleanName(body.name), r = +body.risk;
+    if(!nm) return { ok:false, error:'Falta el nombre.' };
+    if(s.phase !== 'voting' || s.current !== r) return { ok:false, error:'La votación de este riesgo no está abierta.' };
+    if(ORDER.indexOf(body.level) < 0) return { ok:false, error:'Nivel no válido.' };
+    if(!s.attendees[key(nm)]) s.attendees[key(nm)] = { name:nm };
+    s.votes[r][key(nm)] = { l:body.level, j:String(body.just || '').trim().slice(0, JUST_MAX) };
+    return { ok:true };
+  }
+  if(body.pin !== DEMO_PIN) return { ok:false, error:'PIN incorrecto.' };
+  if(a === 'check' || a === 'state') return { ok:true };
+  if(a === 'control'){
+    s.phase = body.phase; s.current = +body.current;
+    if(s.phase === 'result' && s.revealed.indexOf(s.current) < 0) s.revealed.push(s.current);
+    return { ok:true };
+  }
+  if(a === 'reset'){ var keep = s.rev; var nb = blankState(); for(var k in nb) s[k] = nb[k]; s.rev = keep; return { ok:true }; }
+  return { ok:false, error:'Acción desconocida.' };
+}
+
+/* ------------------------- comunicación ------------------------- */
+var DEMO_KEY = 'conectaria_taller_riesgos_demo_v2';
+var S = normalize(null), online = true, inflight = false;
+
+function demoLoad(){ var t = lsGet(DEMO_KEY); try{ return normalize(t ? JSON.parse(t) : null); }catch(e){ return normalize(null); } }
+function demoSave(s){ s.rev++; lsSet(DEMO_KEY, JSON.stringify(s)); }
+
+function fetchState(){
+  if(DEMO){ setState(demoLoad()); return Promise.resolve(); }
+  if(inflight) return Promise.resolve(); inflight = true;
+  // El facilitador recibe el estado completo (emails y justificaciones) con su PIN; el resto, solo el estado público
+  var req = role === 'fac'
+    ? fetch(API_URL, { method:'POST', body:JSON.stringify({ action:'state', pin:facPin }) })
+    : fetch(API_URL + (API_URL.indexOf('?') < 0 ? '?' : '&') + 'action=state&t=' + Date.now());
+  return req.then(function(r){ return r.json(); })
+    .then(function(d){ online = true; if(d && d.state) setState(normalize(d.state)); })
+    .catch(function(){ online = false; renderConn(); })
+    .then(function(){ inflight = false; });
+}
+function post(body){
+  if(DEMO){
+    var s = demoLoad(); var res = applyAction(s, body);
+    if(res.ok && body.action !== 'check' && body.action !== 'state') demoSave(s);
+    setState(s); return Promise.resolve(res);
+  }
+  if(role === 'fac' && facPin && !body.pin) body.pin = facPin;   // así la respuesta trae el estado completo
+  return fetch(API_URL, { method:'POST', body:JSON.stringify(body) })
+    .then(function(r){ return r.json(); })
+    .then(function(d){ online = true; if(d && d.state) setState(normalize(d.state)); return d; })
+    .catch(function(){ online = false; renderConn(); return { ok:false, error:'Sin conexión con el servidor. Intenta de nuevo.' }; });
+}
+var lastRev = -1;
+function setState(s){ S = s; if(S.rev !== lastRev){ lastRev = S.rev; render(); } else { renderConn(); } }
+
+/* ------------------------- sesión local ------------------------- */
+var me = cleanName(lsGet('cx_taller_nombre') || '');
+var meEmp = lsGet('cx_taller_empresa') || '', meMail = lsGet('cx_taller_email') || '';
+if(!meEmp || !validEmail(meMail)) me = '';   // registro incompleto: se vuelve a pedir
+var facPin = ssGet('cx_taller_pin') || '';
+var role = facPin ? 'fac' : 'part';
+var viewIdx = null;          // riesgo abierto en la ventana
+var autoKey = '';            // fase+riesgo que ya abrió la ventana automáticamente
+var boxSig = '';             // evita reconstruir el formulario mientras se escribe
+var drafts = {};             // borrador de voto por riesgo: { l, j }
+var sent = {};               // último voto enviado desde este dispositivo: { l, j }
+try{ sent = JSON.parse(lsGet('cx_taller_enviados') || '{}') || {}; }catch(e){ sent = {}; }
+if(sent._who !== key(me)) sent = { _who:key(me) };
+
+/* ------------------------- cálculos ------------------------- */
+function counts(i){
+  var c = { B:0, M:0, A:0, total:0, keys:{ B:[], M:[], A:[] } }, v = S.votes[i] || {};
+  Object.keys(v).forEach(function(k){ var l = lvOf(v[k]); if(c[l] !== undefined){ c[l]++; c.total++; c.keys[l].push(k); } });
+  return c;
+}
+function groupLevel(c){
+  if(!c.total) return null;
+  var best = null;
+  ORDER.forEach(function(l){ if(best === null || c[l] >= c[best]) best = l; }); // empate → el más alto
+  return best;
+}
+function score(c){ return c.total ? (c.B*1 + c.M*2 + c.A*3) / c.total : 0; }
+function fmt(x){ return x.toFixed(2).replace('.', ','); }
+function isRevealed(i){ return S.revealed.indexOf(i) >= 0 || S.phase === 'final'; }
+function myLevel(i){ return lvOf((S.votes[i] || {})[key(me)]); }
+function mySent(i){ var l = myLevel(i); if(!l) return null; var s = sent[i]; return { l:l, j:(s && s.l === l) ? (s.j || '') : '' }; }
+
+function stackHTML(c){
+  if(!c.total) return '<div class="stack idle">Sin votos</div>';
+  return '<div class="stack">' + ORDER.map(function(l){
+    if(!c[l]) return '';
+    var pct = c[l] / c.total * 100;
+    return '<div class="seg ' + LV[l].cls + '" style="width:' + pct + '%" title="' + LV[l].name + ': ' + c[l] + '">' + (pct >= 12 ? c[l] : '') + '</div>';
+  }).join('') + '</div>';
+}
+
+/* ------------------------- render ------------------------- */
+function render(){
+  renderHeader(); renderStatus(); renderFac(); renderRows(); renderChart(); renderSummary(); renderConn(); syncModal();
+}
+function renderHeader(){
+  var t;
+  if(S.phase === 'idle') t = 'Evaluaremos en grupo tres riesgos principales del sector. Cada participante califica cada riesgo como Bajo, Medio o Alto y puede justificar su voto.';
+  else if(S.phase === 'final') t = 'Votación terminada. Este es el nivel de riesgo que asignó el grupo a cada uno.';
+  else t = 'Riesgo ' + (S.current + 1) + ' de ' + N + ' en evaluación.';
+  $('topSub').textContent = t;
+}
+function renderStatus(){
+  var card = $('statusCard');
+  if(role !== 'part' || !me){ card.hidden = true; return; }
+  card.hidden = false;
+  var p = $('pulse'), title, text, r = RISKS[S.current];
+  p.className = 'pulse';
+  if(S.phase === 'idle'){ title = 'Esperando el inicio'; text = 'El facilitador presentará el primer riesgo en unos momentos.'; }
+  else if(S.phase === 'shown'){ title = r.id + ' en presentación'; text = 'Lee el riesgo; la votación se abrirá enseguida.'; }
+  else if(S.phase === 'voting'){ p.className = 'pulse live'; title = 'Votación abierta: ' + r.id; text = myLevel(S.current) ? 'Ya votaste ' + LV[myLevel(S.current)].name + '. Puedes cambiar tu voto mientras siga abierta.' : 'Califica el riesgo y, si quieres, justifica tu voto.'; }
+  else if(S.phase === 'result'){ title = 'Resultado de ' + r.id; text = 'Revisa cómo votó el grupo. El facilitador seguirá con el próximo riesgo.'; }
+  else { p.className = 'pulse done'; title = 'Taller terminado'; text = 'Gracias por participar. Revisa el resultado final más abajo.'; }
+  $('stTitle').textContent = title; $('stText').textContent = text;
+  $('whoami').textContent = me;
+}
+function renderConn(){
+  var c = $('conn'); if(!c) return;
+  if(DEMO){ c.className = 'conn demo'; c.textContent = 'Modo demo'; }
+  else if(online){ c.className = 'conn on'; c.textContent = 'En línea'; }
+  else { c.className = 'conn off'; c.textContent = 'Sin conexión'; }
+  var fc = $('facConn'); if(fc){ fc.className = c.className; fc.textContent = c.textContent; }
+}
+
+/* secuencia del taller: idle → (presentar, votar, resultado) × N → final */
+function seq(){
+  var a = [{ phase:'idle', current:0 }];
+  for(var i=0;i<N;i++){ a.push({ phase:'shown', current:i }, { phase:'voting', current:i }, { phase:'result', current:i }); }
+  a.push({ phase:'final', current:N - 1 }); return a;
+}
+function seqIdx(){ var a = seq(); for(var i=0;i<a.length;i++){ if(a[i].phase === S.phase && (S.phase === 'idle' || S.phase === 'final' || a[i].current === S.current)) return i; } return 0; }
+function nextLabel(){
+  var p = S.phase, i = S.current;
+  if(p === 'idle') return 'Presentar R1';
+  if(p === 'shown') return 'Abrir votación de ' + RISKS[i].id;
+  if(p === 'voting') return 'Cerrar y mostrar resultado';
+  if(p === 'result') return i < N - 1 ? 'Presentar ' + RISKS[i+1].id : 'Mostrar resultado final';
+  return null;
+}
+var PHASE_TXT = { idle:'Sin iniciar', shown:'En presentación', voting:'Votación abierta', result:'Resultado visible', final:'Taller terminado' };
+function facControlsHTML(){
+  var nl = nextLabel();
+  return '<button class="fbtn" data-fac="prev"' + (seqIdx() === 0 ? ' disabled' : '') + '>Paso anterior</button>' +
+         (nl ? '<button class="fbtn primary" data-fac="next">' + esc(nl) + '</button>' : '');
+}
+function renderFac(){
+  var bar = $('facBar');
+  if(role !== 'fac'){ bar.hidden = true; return; }
+  bar.hidden = false;
+  var c = counts(S.current), att = Object.keys(S.attendees).length;
+  var head = (S.phase === 'idle' || S.phase === 'final') ? 'Panel del facilitador' : RISKS[S.current].id + ' · ' + RISKS[S.current].cat;
+  var meta = plural(att, 'asistente registrado', 'asistentes registrados');
+  if(S.phase === 'voting' || S.phase === 'result') meta += ' · ' + plural(c.total, 'voto', 'votos') + ' en ' + RISKS[S.current].id;
+  bar.innerHTML =
+    '<div class="fb-left"><div class="fb-title">' + esc(head) + ' <span class="pill ' + S.phase + '">' + PHASE_TXT[S.phase] + '</span> <span class="conn" id="facConn"></span></div>' +
+    '<div class="fb-meta">' + meta + '</div></div>' +
+    '<div class="fb-actions">' + facControlsHTML() +
+    '<button class="fbtn dl" data-fac="xlsx">Descargar Excel</button>' +
+    '<button class="fbtn danger" data-fac="reset">Reiniciar</button><button class="fbtn" data-fac="exit">Salir</button></div>';
+}
+function renderRows(){
+  $('rows').innerHTML = RISKS.map(function(r, i){
+    var c = counts(i), cur = (i === S.current && S.phase !== 'idle' && S.phase !== 'final');
+    var dist, tag, meta = '';
+    if(isRevealed(i)){
+      var g = groupLevel(c);
+      dist = stackHTML(c);
+      meta = '<div class="dmeta"><span>' + plural(c.total, 'voto', 'votos') + '</span><span>Índice ' + (c.total ? fmt(score(c)) : '–') + '</span></div>';
+      tag = g ? '<span class="restag ' + LV[g].cls + '">' + LV[g].name + '</span>' : '<span class="restag none">Sin votos</span>';
+    } else if(cur && S.phase === 'voting'){
+      dist = '<div class="stack pending">Votación abierta · ' + plural(c.total, 'voto', 'votos') + '</div>';
+      tag = '<span class="restag cur">Votando</span>';
+    } else if(cur){
+      dist = '<div class="stack idle">En presentación</div>';
+      tag = '<span class="restag cur">En curso</span>';
+    } else {
+      dist = '<div class="stack idle">Pendiente</div>';
+      tag = '<span class="restag none">Pendiente</span>';
+    }
+    return '<div class="rrow' + (cur ? ' current' : '') + '" tabindex="0" role="button" data-idx="' + i + '" aria-label="Abrir ' + r.id + '">' +
+      '<div class="rlabel"><div class="idline"><span class="idbadge">' + r.id + '</span><span class="cat">' + esc(r.cat) + '</span></div><div class="rtitle">' + esc(r.title) + '</div></div>' +
+      '<div class="dist">' + dist + meta + '</div>' +
+      '<div class="rescell">' + tag + '</div><div class="chev">›</div></div>';
+  }).join('');
+}
+function renderChart(){
+  var card = $('chartCard');
+  var shown = RISKS.map(function(r, i){ return isRevealed(i); });
+  var nShown = shown.filter(Boolean).length;
+  if(!nShown){ card.hidden = true; return; }
+  card.hidden = false;
+  $('chartSub').textContent = S.phase === 'final'
+    ? 'Distribución de votos de los ' + N + ' riesgos, en porcentaje de los votos de cada uno.'
+    : nShown + ' de ' + N + ' riesgos con resultado. El gráfico se completa a medida que se cierra cada votación.';
+
+  var W = 760, H = 360, mL = 46, mR = 12, mT = 48, mB = 58;
+  var pw = W - mL - mR, ph = H - mT - mB, band = pw / N, cw = Math.min(120, band * 0.5);
+  var y = function(p){ return mT + ph * (1 - p); };
+  var g = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Gráfico de columnas apiladas con la distribución de votos Bajo, Medio y Alto por riesgo">';
+  [0, .25, .5, .75, 1].forEach(function(p){
+    g += '<line x1="' + mL + '" x2="' + (W - mR) + '" y1="' + y(p) + '" y2="' + y(p) + '" style="stroke:var(--border-strong)" stroke-width="1"' + (p ? ' stroke-dasharray="3 4"' : '') + '/>';
+    g += '<text x="' + (mL - 8) + '" y="' + (y(p) + 4) + '" text-anchor="end" font-size="11" style="fill:var(--text-muted)">' + Math.round(p * 100) + '%</text>';
+  });
+  RISKS.forEach(function(r, i){
+    var cx = mL + band * i + band / 2, x = cx - cw / 2, c = counts(i);
+    if(shown[i] && c.total){
+      var acc = 0;
+      ORDER.forEach(function(l){
+        if(!c[l]) return;
+        var f = c[l] / c.total, y1 = y(acc + f), h = ph * f;
+        g += '<rect x="' + x + '" y="' + y1 + '" width="' + cw + '" height="' + h + '" style="fill:var(--lv-' + LV[l].cls + ')"><title>' + r.id + ' · ' + LV[l].name + ': ' + c[l] + ' (' + Math.round(f * 100) + '%)</title></rect>';
+        if(h >= 20) g += '<text x="' + cx + '" y="' + (y1 + h / 2 + 4) + '" text-anchor="middle" font-size="12" font-weight="600" fill="#fff">' + Math.round(f * 100) + '%</text>';
+        acc += f;
+      });
+      var lv = groupLevel(c);
+      g += '<text x="' + cx + '" y="' + (mT - 24) + '" text-anchor="middle" font-size="15" font-weight="600" style="fill:var(--text-primary)">' + fmt(score(c)) + '</text>';
+      g += '<text x="' + cx + '" y="' + (mT - 9) + '" text-anchor="middle" font-size="11" font-weight="600" style="fill:var(--lv-' + LV[lv].cls + ')">' + LV[lv].name + '</text>';
+    } else {
+      g += '<rect x="' + x + '" y="' + y(1) + '" width="' + cw + '" height="' + ph + '" rx="6" fill="none" style="stroke:var(--border-strong)" stroke-dasharray="5 5"/>';
+      g += '<text x="' + cx + '" y="' + y(.5) + '" text-anchor="middle" font-size="11.5" style="fill:var(--text-muted)">' + (shown[i] ? 'Sin votos' : 'Pendiente') + '</text>';
+    }
+    g += '<text x="' + cx + '" y="' + (H - mB + 20) + '" text-anchor="middle" font-size="13" font-weight="600" style="fill:var(--text-primary)">' + r.id + '</text>';
+    g += '<text x="' + cx + '" y="' + (H - mB + 36) + '" text-anchor="middle" font-size="10.5" style="fill:var(--text-secondary)">' + esc(r.cat) + '</text>';
+    if(shown[i]) g += '<text x="' + cx + '" y="' + (H - mB + 51) + '" text-anchor="middle" font-size="10" style="fill:var(--text-muted)">' + plural(c.total, 'voto', 'votos') + '</text>';
+  });
+  g += '</svg>';
+  $('chartBox').innerHTML = g;
+}
+function renderSummary(){
+  var box = $('summary');
+  if(S.phase !== 'final'){ box.hidden = true; return; }
+  box.hidden = false;
+  var list = RISKS.map(function(r, i){ var c = counts(i); return { r:r, c:c, s:score(c), g:groupLevel(c) }; })
+    .sort(function(a, b){ return b.s - a.s; });
+  var voters = Object.keys(S.attendees).length;
+  var nA = list.filter(function(x){ return x.g === 'A'; }).length;
+  $('summarySub').textContent = plural(voters, 'participante', 'participantes') + '. ' +
+    (nA ? nA + ' de ' + N + ' riesgos quedaron en nivel Alto.' : 'Ningún riesgo quedó en nivel Alto.') + ' Ordenados de mayor a menor índice promedio.';
+  $('rankList').innerHTML = list.map(function(x, k){
+    return '<div class="rank"><div class="pos">' + (k + 1) + '</div>' +
+      '<div class="rlabel"><div class="idline"><span class="idbadge">' + x.r.id + '</span><span class="cat">' + esc(x.r.cat) + '</span></div><div class="rtitle">' + esc(x.r.title) + '</div></div>' +
+      '<div class="dist">' + stackHTML(x.c) + '</div>' +
+      '<div class="score"><b>' + (x.c.total ? fmt(x.s) : '–') + '</b><span>índice</span></div>' +
+      '<div class="rescell">' + (x.g ? '<span class="restag ' + LV[x.g].cls + '">' + LV[x.g].name + '</span>' : '<span class="restag none">Sin votos</span>') + '</div></div>';
+  }).join('');
+}
+
+/* ------------------------- ventana del riesgo ------------------------- */
+function syncModal(){
+  var live = (S.phase === 'shown' || S.phase === 'voting' || S.phase === 'result');
+  var k = S.phase + ':' + S.current;
+  if(k !== autoKey){
+    autoKey = k;
+    if(live && (role === 'fac' || me)) viewIdx = S.current;
+    else if(S.phase === 'final' || S.phase === 'idle') viewIdx = null;
+  }
+  if(!$('gate').hidden || viewIdx === null){ $('overlay').hidden = true; return; }
+  fillModal(viewIdx); $('overlay').hidden = false;
+}
+function showModal(i){ viewIdx = i; boxSig = ''; fillModal(i); $('overlay').hidden = false; }
+function closeModal(){ viewIdx = null; boxSig = ''; $('overlay').hidden = true; }
+
+function fillModal(i){
+  var r = RISKS[i];
+  if($('modal').dataset.idx !== String(i)){
+    $('modal').dataset.idx = String(i); boxSig = '';
+    $('mId').innerHTML = '<span class="badge id">' + r.id + '</span><span class="badge scope">' + esc(r.cat) + '</span>';
+    $('mTitle').textContent = r.title;
+    $('mDesc').textContent = r.desc;
+    $('mRef').innerHTML = '<b>Dato</b><span>' + esc(r.ref) + '</span>';
+    $('mCau').innerHTML = r.causas.map(function(x){ return '<li>' + rich(x) + '</li>'; }).join('');
+    $('mCon').innerHTML = r.cons.map(function(x){ return '<li>' + rich(x) + '</li>'; }).join('');
+  }
+  if(role === 'part') fillPartBox(i); else fillFacBox(i);
+}
+
+function fillPartBox(i){
+  var c = counts(i), isCur = (i === S.current), open = isCur && S.phase === 'voting';
+  var ms = mySent(i);
+  if(!drafts[i]) drafts[i] = ms ? { l:ms.l, j:ms.j } : { l:null, j:'' };
+  var d = drafts[i];
+  var sig = ['p', i, S.phase, isCur, open, isRevealed(i), ms ? ms.l + '|' + ms.j : '', d.l, isRevealed(i) ? JSON.stringify([c.B, c.M, c.A]) : ''].join('~');
+  if(sig === boxSig){ updateSubmit(i); return; }   // nada relevante cambió: no tocar lo que se está escribiendo
+  boxSig = sig;
+  var ta = $('justIn'), hadFocus = ta && document.activeElement === ta, caret = ta ? ta.selectionStart : 0;
+
+  var banner, bcls;
+  if(open){ banner = 'Votación abierta. Puedes cambiar tu voto hasta que el facilitador la cierre.'; bcls = 'open'; }
+  else if(isRevealed(i)){ banner = 'Votación cerrada. Este es el resultado del grupo.'; bcls = 'closed'; }
+  else if(isCur && S.phase === 'shown'){ banner = 'El facilitador está presentando este riesgo. La votación se abrirá enseguida.'; bcls = 'wait'; }
+  else { banner = 'Este riesgo aún no está en votación.'; bcls = 'wait'; }
+
+  var h = '<div class="phasebanner ' + bcls + '">' + banner + '</div>';
+  h += '<div class="vlabel">¿Qué nivel de riesgo le asignas?</div><div class="lvbtns">' + ORDER.map(function(l){
+    return '<button class="lvbtn ' + LV[l].cls + (d.l === l ? ' on' : '') + '" data-vote="' + l + '"' + (open ? '' : ' disabled') + ' aria-pressed="' + (d.l === l) + '">' + LV[l].name + '<small>' + LV[l].help + '</small></button>';
+  }).join('') + '</div>';
+  if(open || (ms && ms.j)){
+    h += '<label class="jlabel" for="justIn">Justificación <span>(opcional)</span></label>' +
+         '<textarea id="justIn" class="justin" maxlength="' + JUST_MAX + '" rows="3" placeholder="¿Por qué asignas este nivel? Por ejemplo, una experiencia en un proyecto o un dato del mercado."' + (open ? '' : ' disabled') + '>' + esc(open ? d.j : ms.j) + '</textarea>';
+  }
+  if(open){
+    h += '<div class="sendrow"><span class="jcount" id="jCount"></span><button class="fbtn primary" id="sendVote">Enviar voto</button></div>';
+  }
+  h += '<div class="myvote" id="myVote"></div>';
+  if(isRevealed(i)) h += tallyHTML(c, false);
+  h += '<div class="facaccess"><button class="linkbtn" data-gofac="1">acceso facilitador</button></div>';
+  $('voteBox').innerHTML = h;
+  $('mFoot').hidden = true;
+
+  var nta = $('justIn');
+  if(nta && open){
+    nta.addEventListener('input', function(){ drafts[i].j = nta.value; updateSubmit(i); });
+    if(hadFocus){ nta.focus(); try{ nta.setSelectionRange(caret, caret); }catch(e){} }
+  }
+  updateSubmit(i);
+}
+function updateSubmit(i){
+  var d = drafts[i] || { l:null, j:'' }, ms = mySent(i);
+  var btn = $('sendVote'), cnt = $('jCount'), mv = $('myVote');
+  var same = ms && ms.l === d.l && (ms.j || '') === (d.j || '').trim();
+  if(btn){
+    btn.disabled = !d.l || same;
+    btn.textContent = ms ? (same ? 'Voto enviado' : 'Actualizar voto') : 'Enviar voto';
+  }
+  if(cnt) cnt.textContent = (d.j || '').length + ' / ' + JUST_MAX;
+  if(mv){
+    if(ms) mv.innerHTML = 'Tu voto enviado: <b>' + LV[ms.l].name + '</b>' + (ms.j ? '' : ' · sin justificación') + (!same && btn ? ' · <span class="warn">tienes cambios sin enviar</span>' : '');
+    else mv.innerHTML = (btn ? (d.l ? 'Elegiste <b>' + LV[d.l].name + '</b>. Presiona «Enviar voto» para registrarlo.' : 'Aún no has votado.') : '');
+  }
+}
+
+function fillFacBox(i){
+  var c = counts(i), isCur = (i === S.current), open = isCur && S.phase === 'voting';
+  var att = Object.keys(S.attendees), voted = Object.keys(S.votes[i] || {});
+  var h = '';
+  if(open){
+    // Durante la votación no se muestra la distribución, para no sesgar si la pantalla está proyectada
+    var missing = att.filter(function(k){ return voted.indexOf(k) < 0; }).map(attName);
+    h += '<div class="phasebanner open">Votación abierta · ' + c.total + ' de ' + att.length + ' asistentes han votado. La distribución se mostrará al cerrar.</div>';
+    h += '<div class="myvote">' + (missing.length ? 'Faltan por votar (' + missing.length + '): ' + esc(missing.join(', ')) : 'Votaron todos los asistentes registrados.') + '</div>';
+  } else if(isRevealed(i)){
+    h += '<div class="vlabel">Resultado del grupo</div>' + tallyHTML(c, true) + justHTML(i, c);
+  } else {
+    h += '<div class="phasebanner wait">' + (isCur && S.phase === 'shown' ? 'Riesgo en presentación. Abre la votación cuando el grupo haya leído el riesgo.' : 'Este riesgo aún no se ha votado.') + '</div>';
+  }
+  $('voteBox').innerHTML = h;
+  var foot = $('mFoot'); foot.hidden = false;
+  foot.innerHTML = (isCur ? facControlsHTML() : '<button class="fbtn primary" data-jump="' + i + '">Presentar ' + RISKS[i].id + ' ahora</button>');
+}
+function tallyHTML(c, showNames){
+  var g = groupLevel(c);
+  var h = '<div class="tally"' + (showNames ? ' style="margin-top:0;padding-top:0;border-top:none"' : '') + '>';
+  h += '<div class="tallyhead">' + (g ? '<span class="bigtag ' + LV[g].cls + '">Nivel del grupo: ' + LV[g].name + '</span>' : '<span class="bigtag none">Sin votos</span>') +
+       '<span>' + plural(c.total, 'voto', 'votos') + (c.total ? ' · índice ' + fmt(score(c)) : '') + '</span></div>';
+  h += stackHTML(c);
+  h += '<div class="tcols">' + ORDER.map(function(l){
+    var pct = c.total ? Math.round(c[l] / c.total * 100) : 0;
+    return '<div class="tcol ' + LV[l].cls + '"><div class="th"><span>' + LV[l].name + '</span><span>' + c[l] + ' · ' + pct + '%</span></div>' +
+      (showNames ? '<div class="names">' + (c.keys[l].length ? esc(c.keys[l].map(attName).join(', ')) : '<i>Nadie</i>') + '</div>' : '') + '</div>';
+  }).join('') + '</div></div>';
+  return h;
+}
+function justHTML(i, c){
+  var v = S.votes[i] || {}, total = 0;
+  var h = '<div class="justs"><div class="vlabel">Justificaciones</div>';
+  ORDER.slice().reverse().forEach(function(l){
+    var items = c.keys[l].filter(function(k){ return justOf(v[k]); });
+    total += items.length;
+    items.forEach(function(k){
+      var a = attObj(k);
+      h += '<div class="jitem ' + LV[l].cls + '"><div class="jwho"><span class="jlv ' + LV[l].cls + '">' + LV[l].name + '</span><b>' + esc(a.name) + '</b>' + (a.empresa ? ' · ' + esc(a.empresa) : '') + '</div><div class="jtxt">' + esc(justOf(v[k])) + '</div></div>';
+    });
+  });
+  if(!total) h += '<div class="myvote">Nadie dejó justificación en este riesgo.</div>';
+  else if(total < c.total) h += '<div class="myvote">' + plural(c.total - total, 'voto sin justificación', 'votos sin justificación') + '.</div>';
+  return h + '</div>';
+}
+
+/* ------------------------- acciones ------------------------- */
+function pickLevel(level){
+  var i = viewIdx; if(i === null) return;
+  if(!me){ openGate(); return; }
+  var ta = $('justIn'); drafts[i] = drafts[i] || { l:null, j:'' };
+  if(ta) drafts[i].j = ta.value;
+  drafts[i].l = level;
+  document.querySelectorAll('#voteBox .lvbtn').forEach(function(b){ var on = b.dataset.vote === level; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+  updateSubmit(i);
+}
+function sendVote(){
+  var i = viewIdx, d = drafts[i]; if(!d || !d.l) return;
+  var just = String(d.j || '').trim().slice(0, JUST_MAX);
+  var btn = $('sendVote'); if(btn){ btn.disabled = true; btn.textContent = 'Enviando…'; }
+  post({ action:'vote', name:me, risk:i, level:d.l, just:just }).then(function(res){
+    if(!res.ok){ toast(res.error || 'No se pudo registrar el voto.'); boxSig = ''; fetchState(); updateSubmit(i); return; }
+    sent[i] = { l:d.l, j:just }; sent._who = key(me); lsSet('cx_taller_enviados', JSON.stringify(sent));
+    drafts[i].j = just; boxSig = ''; fillModal(i); renderStatus();
+    toast('Voto registrado: ' + LV[d.l].name);
+  });
+}
+function facGo(target){
+  post({ action:'control', pin:facPin, phase:target.phase, current:target.current }).then(function(d){
+    if(!d.ok){ toast(d.error || 'No se pudo actualizar.'); if(/PIN/.test(d.error || '')) exitFac(); }
+  });
+}
+function facStep(dir){ var a = seq(), k = seqIdx() + dir; if(k >= 0 && k < a.length) facGo(a[k]); }
+function exitFac(){ facPin = ''; ssDel('cx_taller_pin'); role = 'part'; closeModal(); if(!me) openGate(); lastRev = -1; fetchState(); render(); }
+
+/* ------------------------- descarga Excel ------------------------- */
+var xlsxLoading = null;
+function loadXLSX(){
+  if(window.XLSX) return Promise.resolve();
+  if(xlsxLoading) return xlsxLoading;
+  xlsxLoading = new Promise(function(res, rej){
+    var sc = document.createElement('script'); sc.src = XLSX_SRC;
+    sc.onload = function(){ res(); }; sc.onerror = function(){ xlsxLoading = null; rej(); };
+    document.head.appendChild(sc);
+  });
+  return xlsxLoading;
+}
+function exportRows(){
+  var resumen = [['Riesgo','Categoría','Riesgo (descripción)','Votos','Bajo','Medio','Alto','% Bajo','% Medio','% Alto','Índice promedio (1-3)','Nivel del grupo','Justificaciones recibidas']];
+  var votos = [['Riesgo','Categoría','Nombre','Empresa','Email','Nivel','Justificación']];
+  var emitted = {};
+  RISKS.forEach(function(r, i){
+    var c = counts(i), g = groupLevel(c), v = S.votes[i] || {}, nj = 0;
+    Object.keys(v).forEach(function(k){
+      var a = attObj(k), l = lvOf(v[k]), j = justOf(v[k]); if(j) nj++;
+      emitted[k] = (emitted[k] || 0) + 1;
+      votos.push([r.id, r.cat, a.name || k, a.empresa || '', a.email || '', LV[l] ? LV[l].name : l, j]);
+    });
+    var pct = function(x){ return c.total ? Math.round(x / c.total * 1000) / 10 : 0; };
+    resumen.push([r.id, r.cat, r.title, c.total, c.B, c.M, c.A, pct(c.B), pct(c.M), pct(c.A), c.total ? Math.round(score(c) * 100) / 100 : '', g ? LV[g].name : 'Sin votos', nj]);
+  });
+  var asist = [['Nombre','Empresa','Email','Votos emitidos']];
+  Object.keys(S.attendees).forEach(function(k){ var a = attObj(k); asist.push([a.name || k, a.empresa || '', a.email || '', emitted[k] || 0]); });
+  return { resumen:resumen, votos:votos, asist:asist };
+}
+function stamp(){ var d = new Date(), p = function(n){ return (n < 10 ? '0' : '') + n; }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + '_' + p(d.getHours()) + p(d.getMinutes()); }
+function downloadBlob(blob, name){
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+}
+function exportXlsx(){
+  toast('Preparando descarga…');
+  var fresh = DEMO ? Promise.resolve() : post({ action:'state', pin:facPin });
+  fresh.then(function(){
+    var t = exportRows();
+    return loadXLSX().then(function(){
+      var wb = XLSX.utils.book_new();
+      var add = function(rows, name, widths){ var ws = XLSX.utils.aoa_to_sheet(rows); ws['!cols'] = widths.map(function(w){ return { wch:w }; }); XLSX.utils.book_append_sheet(wb, ws, name); };
+      add(t.resumen, 'Resumen', [8,22,70,7,6,7,6,8,9,8,12,14,14]);
+      add(t.votos, 'Votos y justificaciones', [8,22,26,24,30,8,80]);
+      add(t.asist, 'Asistentes', [28,26,32,14]);
+      XLSX.writeFile(wb, 'Taller_Riesgos_Ingenieria_Consulta_' + stamp() + '.xlsx');
+      toast('Excel descargado.');
+    }, function(){
+      // Sin acceso a la librería: se descargan tres CSV compatibles con Excel
+      var csv = function(rows){ return '\ufeff' + rows.map(function(r){ return r.map(function(x){ x = String(x == null ? '' : x); return /[";\n]/.test(x) ? '"' + x.replace(/"/g, '""') + '"' : x; }).join(';'); }).join('\r\n'); };
+      var s = stamp();
+      downloadBlob(new Blob([csv(t.resumen)], { type:'text/csv;charset=utf-8' }), 'Resumen_' + s + '.csv');
+      setTimeout(function(){ downloadBlob(new Blob([csv(t.votos)], { type:'text/csv;charset=utf-8' }), 'Votos_' + s + '.csv'); }, 400);
+      setTimeout(function(){ downloadBlob(new Blob([csv(t.asist)], { type:'text/csv;charset=utf-8' }), 'Asistentes_' + s + '.csv'); }, 800);
+      toast('Sin acceso a la librería de Excel: se descargaron 3 archivos CSV.');
+    });
+  });
+}
+
+/* ------------------------- eventos ------------------------- */
+document.addEventListener('click', function(e){
+  var t = e.target.closest('button, .rrow'); if(!t || t.disabled) return;
+  if(t.classList.contains('rrow')) return showModal(+t.dataset.idx);
+  if(t.id === 'sendVote') return sendVote();
+  if(t.dataset.vote) return pickLevel(t.dataset.vote);
+  if(t.dataset.jump !== undefined) return facGo({ phase:'shown', current:+t.dataset.jump });
+  if(t.dataset.gofac) return openGate('fac');
+  var f = t.dataset.fac;
+  if(f === 'next') return facStep(1);
+  if(f === 'prev') return facStep(-1);
+  if(f === 'exit') return exitFac();
+  if(f === 'xlsx') return exportXlsx();
+  if(f === 'reset'){
+    if(confirm('¿Borrar todos los votos, justificaciones y asistentes y volver al inicio? Descarga el Excel antes si necesitas respaldo. Esta acción no se puede deshacer.'))
+      post({ action:'reset', pin:facPin }).then(function(d){ toast(d.ok ? 'Taller reiniciado.' : (d.error || 'No se pudo reiniciar.')); });
+  }
+});
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Enter' && e.target.classList && e.target.classList.contains('rrow')) e.target.click();
+  if(e.key === 'Escape' && !$('overlay').hidden) closeModal();
+});
+$('closeBtn').onclick = closeModal;
+$('overlay').addEventListener('click', function(e){ if(e.target === this) closeModal(); });
+
+/* ------------------------- ingreso ------------------------- */
+function setTab(which){
+  $('tabPart').classList.toggle('on', which === 'part'); $('tabFac').classList.toggle('on', which === 'fac');
+  $('panePart').hidden = which !== 'part'; $('paneFac').hidden = which !== 'fac'; $('pinErr').hidden = true;
+  setTimeout(function(){ (which === 'part' ? $('nameInput') : $('pinInput')).focus(); }, 30);
+}
+function openGate(tab){
+  $('gate').hidden = false; $('overlay').hidden = true;
+  $('nameInput').value = me; $('empInput').value = meEmp; $('mailInput').value = meMail; $('pinInput').value = '';
+  $('regErr').hidden = true; ['nameInput','empInput','mailInput'].forEach(function(id){ $(id).classList.remove('bad'); });
+  $('gateCancel').hidden = !(me || role === 'fac');
+  setTab(tab || 'part');
+}
+function closeGate(){ $('gate').hidden = true; boxSig = ''; syncModal(); }
+$('tabPart').onclick = function(){ setTab('part'); };
+$('tabFac').onclick = function(){ setTab('fac'); };
+$('gateCancel').onclick = closeGate;
+$('changeName').onclick = function(){ openGate('part'); };
+$('goFac').onclick = function(){ openGate('fac'); };
+$('nameOk').onclick = function(){
+  var n = cleanName($('nameInput').value), emp = $('empInput').value.trim(), mail = $('mailInput').value.trim().toLowerCase();
+  var bad = null;
+  ['nameInput','empInput','mailInput'].forEach(function(id){ $(id).classList.remove('bad'); });
+  if(!n) bad = ['nameInput', 'Escribe tu nombre y apellido.'];
+  else if(!emp) bad = ['empInput', 'Escribe tu empresa.'];
+  else if(!validEmail(mail)) bad = ['mailInput', 'Escribe un email válido, por ejemplo nombre@empresa.cl.'];
+  if(bad){ $(bad[0]).classList.add('bad'); $(bad[0]).focus(); $('regErr').textContent = bad[1]; $('regErr').hidden = false; return; }
+  var btn = $('nameOk'); btn.disabled = true;
+  var wasFac = role === 'fac'; role = 'part'; facPin = ''; ssDel('cx_taller_pin');
+  post({ action:'join', name:n, empresa:emp, email:mail }).then(function(d){
+    btn.disabled = false;
+    if(!d.ok){ $('regErr').textContent = d.error || 'No se pudo registrar. Intenta de nuevo.'; $('regErr').hidden = false; return; }
+    if(key(n) !== key(me)){ sent = { _who:key(n) }; drafts = {}; lsSet('cx_taller_enviados', JSON.stringify(sent)); }
+    me = n; meEmp = emp; meMail = mail;
+    lsSet('cx_taller_nombre', n); lsSet('cx_taller_empresa', emp); lsSet('cx_taller_email', mail);
+    autoKey = ''; closeGate(); if(wasFac){ lastRev = -1; fetchState(); } render();
+    toast('Registro listo. Bienvenido/a, ' + n.split(' ')[0] + '.');
+  });
+};
+$('pinOk').onclick = function(){
+  var p = $('pinInput').value.trim(); if(!p) return;
+  post({ action:'check', pin:p }).then(function(d){
+    if(d.ok){ facPin = p; ssSet('cx_taller_pin', p); role = 'fac'; autoKey = ''; boxSig = ''; $('modal').dataset.idx = ''; closeGate(); lastRev = -1; fetchState(); render(); }
+    else { $('pinErr').textContent = d.error || 'PIN incorrecto.'; $('pinErr').hidden = false; }
+  });
+};
+['nameInput','empInput','mailInput'].forEach(function(id){ $(id).addEventListener('keydown', function(e){ if(e.key === 'Enter') $('nameOk').click(); }); });
+$('pinInput').addEventListener('keydown', function(e){ if(e.key === 'Enter') $('pinOk').click(); });
+
+/* ------------------------- arranque ------------------------- */
+if(DEMO) window.addEventListener('storage', function(e){ if(e.key === DEMO_KEY) fetchState(); });
+render();
+if(!me && role !== 'fac') openGate('part');
+fetchState();
+setInterval(fetchState, POLL_MS);
+</script>
+</body>
+</html>
